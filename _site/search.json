@@ -1,0 +1,20 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this blog",
+      "description": "Some additional details about the blog",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-05-22T17:59:38+08:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Ruiyun's Blog",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2021-05-22T17:59:39+08:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}

@@ -1,0 +1,12 @@
+name: "R4VA"
+title: "Ruiyun's Blog"
+description: |
+  Ruiyun's Blog
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+output: distill::distill_article
