@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-05-30-dataviz-makeover-1/",
+    "title": "DataViz Makeover #1",
+    "description": "DataViz Makeover 1 for ISSS608: Visual Analytics.",
+    "author": [
+      {
+        "name": "YAN Ruiyun",
+        "url": "https://www.linkedin.com/in/ruiyun-yan-b40208204/"
+      }
+    ],
+    "date": "2021-05-30",
+    "categories": [],
+    "contents": "\r\n1. Original visualization Evaluation\r\n1.1 Clarity\r\nThere is duplication of each chart. Area chart usually used to show a response to summarized by categories and used to represent cumulated totals using numbers or percentages (stacked area charts in this case) over time. For the chart, there is duplication of import and export which is difficult to see the trend.\r\nTime period of each country are not clear enough, Japan only has 2020 while others have 2019~2021.\r\nThe Y-axis of each country is not the same, as such, the difference in scale is not conveyed properly. It is hard to compare the different import and export trade across different country or even within the same country.\r\n1.2 Aesthetics\r\nIt is not necessary to use two Y-axes to represent export and import. It will confuse readers. In addition, there is no marker to identify which country’s currency is used to measure the exports and imports.\r\nThe title of the graph shows these six countries are the top trade countries. The subtitles of the graphs do not convey the intent of the graphs well. In this case, the graph is trying to show the change in merchandise trade of six country during 2019 and 2020, and the subtitles “Month of Period” mention that the graphs are using the monthly data while the X-axis only show yearly marker. Hence, the subtitles are not clear.\r\nThere is poor use of colors in the chart. The fill color is not particularly useful as it does not seem to serve any purpose, especially for some charts which have lots of duplication.\r\n2. Proposed Design\r\n2.1 Sketch\r\nThe proposed design is as follow.\r\n\r\n2.2 Advantages of proposed design\r\nMore clear title and subtitle are used to explain key words and definitions in the graph.\r\nY-axis are changed to same unit of measurement to enable the reader to read and compare imports value, exports value and net exports value across different month more easily.\r\nNew measure value: net export value is used to show the merchandise trade of each country clearly.\r\nAdd a bar chart to show net value, color (green and red) is used to bring attention negative or positive net exports value.\r\nAnnotations are used to emphasize key observations. Within the annotations, ranking of net exports value is added to show the rank each month between countries.\r\n3. Data visualization steps\r\n3.1 Data preparation\r\nCheck “Clean with Data Interpreter” to automatically identify the form. \r\nSelect useless months (months between 1976 ~ 2018 and after 2021) and hide. \r\nUse Tableau to pivot the data in sheet, with measure values in columns and variables (countries) in rows. \r\nView the data in Tableau. \r\nExport the data.\r\n\r\nRepeat steps 1 – 6 for exports. Merge the exported files using Microsoft Excel and select observations from six countries.\r\nImport the cleaned dataset into Tableau. \r\n3.2 Data visualization\r\nAdd “Month” to Columns tab and “Country”, “Measure Values” and “Net Export” to Rows tab.\r\n\r\nRemove other measure values only keep imports and exports. \r\nRight click on the bottom Y-axis and select dual axis chart to make import values and export values show in the same view.\r\n\r\nRight click on the right Y-axis, select Synchronize Axis and deselect Show Header to let the Y-axis of each country under the same measurement.\r\n\r\nDrag Net Exports to Color tab and change panel from Automatic to Bar. \r\nRename the title and the measure names. \r\nShow the value of each country’s imports and exports in January 2019 and December 2020 to let readers see the change easily. \r\nRight click the Net Export tab on the right and click edit colors. Set stepped color in 2 and choose 2 colors. For red, it means represent imports is greater than exports and green represent the opposite situation.\r\n\r\nCreate three Calculated Fields. \r\n\r\n\r\nDrag three Calculated Fields into Tooltip and edit Tooltip. \r\nCreate a new dashboard and drag the Sheet 1 from left to the right. \r\n\r\n4. Final visualization\r\n4.1 Snapshot of dashboard\r\n\r\n4.2 Main observations\r\nOverall, export is trending upwards across all countries/regions except Japan between 2019 and 2020. For import, three countries/regions (Hong Kong, Tai Wan and Malaysia) increase while other three (Mainland China, The U.S. and Japan) decrease.\r\nFor net exports value, there was negative as well as positive in Japan, Malaysia, the U.S. and Mainland China while Hong Kong only had negative values and Tai Wan only had positive values.\r\nFor the countries which had both negative and positive net exports value, most of the consecutive negative net exports had been since April 2020. This may be potentially because of COVID-19.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-05-30T19:59:01+08:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to Ruiyun's Blog",
     "description": "This blog consists of a collection of R assignments, projects and . We hope you enjoy \nreading what we have to say!",
@@ -14,6 +31,6 @@
     "contents": "\r\n\r\n\r\n\r\n",
     "preview": {},
     "last_modified": "2021-05-22T18:04:58+08:00",
-    "input_file": "welcome.utf8.md"
+    "input_file": {}
   }
 ]
