@@ -1,7 +1,7 @@
 ---
 title: "DataViz Makeover #2"
 description: |
-  A short description of the post.
+  DataViz Makeover 2 for ISSS608: Visual Analytics.
 author:
   - name: YAN Ruiyun
     url: https://www.linkedin.com/in/ruiyun-yan-b40208204/
