@@ -6,14 +6,14 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-06-20T23:35:39+08:00"
+      "last_modified": "2021-06-20T23:37:40+08:00"
     },
     {
       "path": "index.html",
       "title": "Ruiyun's Blog",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-06-20T23:35:43+08:00"
+      "last_modified": "2021-06-20T23:37:41+08:00"
     }
   ],
   "collections": ["posts/posts.json"]
