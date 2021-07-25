@@ -320,6 +320,7 @@ For these issues, we recommend that using full join to join credit and loyalty c
 > Add the vehicle data to your analysis of the credit and loyalty card data. How does your assessment of the anomalies in question 1 change based on this new data? What discrepancies between vehicle, credit, and loyalty card data do you find? Please limit your answer to 8 images and 500 words.
 
 First, we cleaned the car data.
+
 ```{r echo=TRUE, eval=TRUE}
 # Create new column for full name to make records unique
 car$fullname <- paste(car$FirstName,car$LastName, sep = " ") 
