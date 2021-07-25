@@ -379,6 +379,16 @@ gps_car$Interval <- as.numeric(gps_car$Interval)
 #Remove the observations were less than 15 minutes
 gps_car <- gps_car %>% 
   filter(Interval > 900)
+
+#Inner join gps_car data and credit/loyalty card data to identify the card owner
+cd_loyalty_gps <- gps_car %>% 
+  inner_join(cd_loyalty, by = c("Timestamp" = "timestamp"),
+             method = "osa",
+             max_dist = 1,
+             distance_col = "distance")
+
+#Remove useless columns 
+cd_loyalty_gps1 <- cd_loyalty_gps[,-c(5:8,10:13,15:16,21:27,29:31)]
 ```
 
 
