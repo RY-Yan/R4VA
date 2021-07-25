@@ -131,9 +131,7 @@ Clean the loyalty card data
 ```{r echo=TRUE, eval=TRUE}
 loyalty$weekday <- wday(loyalty$timestamp, label = TRUE)
 loyalty$day <- day(loyalty$timestamp) %>% as_factor 
-loyalty$popular_location <- paste(loyalty$timestamp,loyalty$location,loyalty$price) # Create a separate column of unique values using concatenated values in the loyalty data
-#loyalty <- tibble::rowid_to_column(loyalty, "ID") # Create a numeric id column
-#loyalty$ID <- as_factor(loyalty$ID) # Change the column format to nominal format
+loyalty$popular_location <- paste(loyalty$timestamp,loyalty$location,loyalty$price)
 ```
 
 Clean the gps data
@@ -300,7 +298,6 @@ duplicates <- rbind(loyalty_cd_duplicates,cd_loyalty_duplicates)
 g <- graph.data.frame(duplicates,directed = TRUE)
 
 V(g)$type <- bipartite_mapping(g)$type
-# define color and shape mappings.
 col <- c("sky blue", "orange")
 shape <- c("circle", "square")
 E(g)$color <- 'steelblue'
