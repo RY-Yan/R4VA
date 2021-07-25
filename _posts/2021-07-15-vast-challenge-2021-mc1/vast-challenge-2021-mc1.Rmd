@@ -270,27 +270,19 @@ cd_loyalty <- cd %>%
              distance_col = "distance")
 
 #Then we select the useful data
-cd_loyalty <- cd %>% 
-  inner_join(loyalty, by = c("date" = "timestamp",
-                             "location" = "location",
-                             "price" = "price"),
-             method = "osa",
-             max_dist = 1,
-             distance_col = "distance")
-
 #Try to find if there are some associate transactions
 cd_loyalty1 <- cd_loyalty %>% 
   group_by(last4ccnum,loyaltynum) %>%
   count() %>%
   ungroup()
 
-ccduplicates <- cd_loyalty1 %>% 
-  filter(n>3) %>%
-  filter(cd_loyalty1$last4ccnum == cd_loyalty1$last4ccnum[duplicated(cd_loyalty1$last4ccnum)])
+#cdduplicates <- cd_loyalty1 %>% 
+#  filter(n>3) %>%
+#  filter(cd_loyalty1$last4ccnum == #cd_loyalty1$last4ccnum[duplicated(cd_loyalty1$last4ccnum)])
 
-loyaltyduplicates <- cd_loyalty1 %>% 
-  filter(n>3) %>%
-  filter(cd_loyalty1$loyaltynum == cd_loyalty1$loyaltynum[duplicated(cd_loyalty1$loyaltynum)])
+#loyaltyduplicates <- cd_loyalty1 %>% 
+#  filter(n>3) %>%
+#  filter(cd_loyalty1$loyaltynum == #cd_loyalty1$loyaltynum[duplicated(cd_loyalty1$loyaltynum)])
 
 #One loyalty card links to two credit cards
 loyalty_cd_duplicates <- subset(cd_loyalty1,loyaltynum == "L6267" | loyaltynum == "L3288") 
