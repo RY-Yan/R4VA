@@ -346,24 +346,6 @@ route <- route+ ggtitle(label = "Movement Route by Current Employment Type",
   plot.title = element_text(color = "black",size = 20),
   plot.subtitle = element_text(size = 15))
 route
-
-gps2<-gps %>%
-  filter(gps$id == '101',
-         gps$id == '104',
-         gps$id == '105',
-         gps$id == '106',
-         gps$id == '107')
-
-route2 <- ggplot() +   
-      geom_point(data = gps2, 
-                   aes(x = long, y = lat,color = id), 
-                   size = 0.4)+
-      facet_grid(day~id) + theme_bw()
-route2 <- p5+ ggtitle(label = "Movement Route by Car ID",
-                  subtitle = '(Trucks')+theme(
-  plot.title = element_text(color = "black",size = 20),
-  plot.subtitle = element_text(size = 15))
-route2
 ```
 
 ```{r echo=TRUE, eval=TRUE}
