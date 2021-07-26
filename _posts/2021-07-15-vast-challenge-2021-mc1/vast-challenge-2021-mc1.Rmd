@@ -370,9 +370,6 @@ First, we combined the gps and car data.
 gps_car <- left_join(gps,car, by = c("id" = "CarID")) 
 # Sort first by ID in ascending order
 gps_car <- gps_car[with(gps_car,order(id, Timestamp)),]
-gps_car <- gps_car %>% # Add running number in the first column
-  mutate(No = 1:n()) %>% 
-  dplyr::select(No, everything()) 
 # Create a new column to compute the time time interval at which a car was recorded
 gps_car <- gps_car %>% 
   mutate(Interval = Timestamp - lag(Timestamp, default = first(Timestamp)))
@@ -381,15 +378,184 @@ gps_car$Interval <- as.numeric(gps_car$Interval)
 gps_car <- gps_car %>% 
   filter(Interval > 900)
 
+#Remove the duplicates
+cdre <- cd_loyalty %>%
+  filter(!(last4ccnum == "1286" & loyaltynum == "L3288" 
+           & !is.na(last4ccnum) & !is.na(loyaltynum))) %>% 
+  filter(!(last4ccnum == "6899" & loyaltynum == "L6267" 
+           & !is.na(last4ccnum) & !is.na(loyaltynum)))
+```
+
+```{r echo=FALSE}
+gps_car$Location <- 0 
+gps_car <- gps_car %>% mutate( 
+  Location = case_when(
+    between(lat, 36.05092013, 36.05102938) & 
+      between(long, 24.82586806, 24.82598723)  ~ "Abila Airport",
+    between(lat, 36.07434876, 36.07443715) & 
+      between(long, 24.84592966, 24.84598782)  ~ "Abila Scrapyard",
+    between(lat, 36.06342076, 36.06349309) & 
+      between(long, 24.85096457, 24.85103679)  ~ "Abila Zacharo", 
+    between(lat, 36.07712237, 36.07715385) & 
+      between(long, 24.87617634, 24.87621582)  ~ "Ahaggo Museum", 
+    between(lat, 36.07522801, 36.07530344) & 
+      between(long, 24.85626503, 24.85634849)  ~ "Albert's Fine Clothing", 
+    between(lat, 36.08172086, 36.08182543) & 
+      between(long, 24.85086882, 24.85096705)  ~ "Bean There Done That", 
+    between(lat, 36.05402149, 36.05413903) & 
+      between(long, 24.90116515, 24.90128202)  ~ "Brew've Been Served", 
+    between(lat, 36.07332048, 36.07336116) & 
+      between(long, 24.86416419, 24.86420583)  ~ "Brewed Awakenings", 
+    between(lat, 36.06582469, 36.065941) & 
+      between(long, 24.90097567, 24.90108865)  ~ "20 Building Control Stenig's Home", 
+    between(lat, 36.05851786, 36.05860144) & 
+      between(long, 24.8808655, 24.88092654)  ~ "Carlyle Chemical Inc.", 
+    between(lat, 36.07818062, 36.07821857) & 
+      between(long, 24.87211555, 24.8721508)  ~ "4 CFO Ingrid's Home", 
+    between(lat, 36.07682044, 36.07685752) & 
+      between(long, 24.8658641, 24.86589901)  ~ "10 CIO Ada's Home", 
+    between(lat, 36.0721156, 36.07215701) & 
+      between(long, 24.87458425, 24.8746267)  ~ "32 COO Orhan's Home", 
+    between(lat, 36.07062423, 36.07073983) & 
+      between(long, 24.89517609, 24.89526281)  ~ "Chostus Hotel", 
+    between(lat, 36.05462322, 36.05469486) & 
+      between(long, 24.88977034, 24.88983886)  ~ "Coffee Cameleon", 
+    between(lat, 36.08954231, 36.08962196) & 
+      between(long, 24.86066508, 24.8607611)  ~ "Desafio Golf Course", 
+    between(lat, 36.07292088, 36.07301365) & 
+      between(long, 24.88396447, 24.88405897)  ~ "26 Drill Site Manager Marin's Home", 
+    between(lat, 36.08442031, 36.08449538) & 
+      between(long, 24.86416741, 24.8642387)  ~ "7 Drill Technician Elsa's Home", 
+    between(lat, 36.08424703, 36.08432477) & 
+      between(long, 24.8563809, 24.8564637)  ~ "9 Drill Technician Gustav's Home", 
+    between(lat, 36.0726185, 36.07380904) & 
+      between(long, 24.87510166, 24.87613744)  ~ "28 Drill Technician Isande's Home", 
+    between(lat, 36.06922564, 36.06931513) & 
+      between(long, 24.88416486, 24.88426267)  ~ "27 Drill Technician Kare's Home", 
+    between(lat, 36.08542073, 36.08550845) & 
+      between(long, 24.86036422, 24.86045943)  ~ "2 Engineer Lars's Home", 
+    between(lat, 36.08664252, 36.08672442) & 
+      between(long, 24.85756416, 24.85766744)  ~ "3 Engineer Felix's Home", 
+    between(lat, 36.07622023, 36.07626546) & 
+      between(long, 24.87466429, 24.87471053)  ~ "35 Environmental Safety Advisor Willem's Home", 
+    between(lat, 36.07212045, 36.07213193) & 
+      between(long, 24.84132949, 24.84134818)  ~ "Frank's Fuel", 
+    between(lat, 36.05492145, 36.05503511) & 
+      between(long, 24.90176782, 24.90188061)  ~ "Frydos Autosupply n' More", 
+    between(lat, 36.04802098, 36.04805422) & 
+      between(long, 24.87956497, 24.87957691)  ~ "GasTech", 
+    between(lat, 36.05970763, 36.05981097) & 
+      between(long, 24.85797552, 24.8580772)  ~ "Gelatogalore", 
+    between(lat, 36.06034564, 36.06043016) & 
+      between(long, 24.85646426, 24.85657454)  ~ "General Grocer", 
+    between(lat, 36.05572125, 36.05584094) & 
+      between(long, 24.90246542, 24.90258487)  ~ "Guy's Gyros",
+    between(lat, 36.06362146, 36.06371539) & 
+      between(long, 24.88586605, 24.88595859)  ~ "Hallowed Grounds", 
+    between(lat, 36.07660977, 36.07669909) & 
+      between(long, 24.85756408, 24.85764247)  ~ "Hippokampos", 
+    between(lat, 36.08412146, 36.08420924) & 
+      between(long, 24.85896842, 24.85905081)  ~ "11 Hydraulic Technician Axel's Home", 
+    between(lat, 36.08782802, 36.08793196) & 
+      between(long, 24.85627136, 24.8563725)  ~ "19 Hydraulic Technician Vira's Home", 
+    between(lat, 36.06641679, 36.06650723) & 
+      between(long, 24.88256875, 24.88265687)  ~ "1 IT Helpdesk Nils's Home", 
+    between(lat, 36.06729646, 36.06736745) & 
+      between(long, 24.87788423, 24.87795559)  ~ "5 IT Technician Isak's Home", 
+    between(lat, 36.06722012, 36.06731624) & 
+      between(long, 24.8858687, 24.88596759)  ~ "8 IT Technician Lucas's Home", 
+    between(lat, 36.06749651, 36.0675518) & 
+      between(long, 24.87330651, 24.873366)  ~ "Jack's Magical Beans", 
+    between(lat, 36.06582037, 36.06584879) & 
+      between(long, 24.85236427, 24.85241027)  ~ "Kalami Kafenion", 
+    between(lat, 36.05442247, 36.05453641) & 
+      between(long, 24.89986596, 24.89998054)  ~ "Katerina's Cafe", 
+    between(lat, 36.05292229, 36.05296701) & 
+      between(long, 24.84936915, 24.84941679)  ~ "Kronos Capital", 
+    between(lat, 36.06582196, 36.06587998) & 
+      between(long, 24.8497762, 24.84983936)  ~ "Kronos Mart", 
+    between(lat, 36.06523446, 36.06534083) & 
+      between(long, 24.83307421, 24.83318494)  ~ "Kronos Pipe and Irrigation", 
+    between(lat, 36.06402993, 36.06410072) & 
+      between(long, 24.84137818, 24.84144338)  ~ "Maximum Iron and Steel", 
+    between(lat, 36.05840347, 36.05849041) & 
+      between(long, 24.88546548, 24.88553455)  ~ "Nationwide Refinery", 
+    between(lat, 36.05859158, 36.05859887) & 
+      between(long, 24.85790261, 24.85799357)  ~ "Octavio's Office Supplies", 
+    between(lat, 36.05192066, 36.05197575) & 
+      between(long, 24.87076418, 24.87082137)  ~ "Ouzeri Elian", 
+    between(lat, 36.06764972, 36.06775002) & 
+      between(long, 24.90243213, 24.9025445)  ~ "34 Perimeter Control Edvard's Home", 
+    between(lat, 36.06324941, 36.06330782) & 
+      between(long, 24.85226894, 24.8523291)  ~ "Roberts and Sons", 
+    between(lat, 36.05942407, 36.05952152) & 
+      between(long, 24.89476557, 24.8948649)  ~ "Shared Home A - 6 Linnea 25 Kanon 29 Bertrand", 
+    between(lat, 36.06332304, 36.06343537) & 
+      between(long, 24.89607033, 24.89617856)  ~ "Shared Home B - 14 Lidelse 18 Birgitta 21 Hennie", 
+    between(lat, 36.06242283, 36.06253955) & 
+      between(long, 24.89877023, 24.89888179)  ~ "Shared Home C - 17 Sven 24 Minke 33 Brand", 
+    between(lat, 36.05842222, 36.05853828) & 
+      between(long, 24.90096522, 24.90107874)  ~ "Shared Home D - 22 Adra 23 Varja 30 Felix", 
+    between(lat, 36.0603222, 36.06044736) & 
+      between(long, 24.90556693, 24.90569385)  ~ "Shared Home E - 13 Inga 15 Loreto 16 Isia 21 Hennie", 
+    between(lat, 36.05282139, 36.05288367) & 
+      between(long, 24.86856868, 24.8686314)  ~ "Shoppers' Delight", 
+    between(lat, 36.06772112, 36.06784956) & 
+      between(long, 24.89906521, 24.89917328)  ~ "12 Site Control Hideki's Home", 
+    between(lat, 36.05409586, 36.05420832) & 
+      between(long, 24.90806584, 24.90817838)  ~ "Stewart and Sons Fabrication", 
+    between(lat, 36.06774029, 36.06776587) & 
+      between(long, 24.87148791, 24.87150031)  ~ "U-Pump", 
+    between(lat, 36.05012433, 36.05021624) & 
+      between(long, 24.9003978, 24.90047475)  ~ "Unknown Site 1", 
+    between(lat, 36.06314781, 36.06324321) & 
+      between(long, 24.90010823, 24.90018668)  ~ "Unknown Site 2", 
+    between(lat, 36.05893131, 36.05900826) & 
+      between(long, 24.89277554, 24.89284962)  ~ "Unknown Site 3", 
+    between(lat, 36.08061881, 36.08067087) & 
+      between(long, 24.84681621, 24.84688282)  ~ "Unknown Site 4", 
+    between(lat, 36.06944928, 36.0695319) & 
+      between(long, 24.84147082, 24.84157048)  ~ "Unknown Site 5", 
+    between(lat, 36.05149231, 36.05253234) & 
+      between(long, 24.87495168, 24.87611086)  ~ "Unknown Site 6", 
+    between(lat, 36.05543848, 36.05657576) & 
+      between(long, 24.86618187, 24.86735)  ~ "Unknown Site 7",  
+    between(lat, 36.07099038, 36.07200089) & 
+      between(long, 24.86869468, 24.86985682)  ~ "Unknown Site 8",  
+  ))
+```
+
+```{r echo=TRUE, eval=TRUE}
 #Inner join gps_car data and credit/loyalty card data to identify the card owner
 cd_loyalty_gps <- gps_car %>% 
-  inner_join(cd_loyalty, by = c("Timestamp" = "timestamp"),
+  inner_join(cdre, by = c("Timestamp" = "timestamp",
+                          "Location" = "location"),
              method = "osa",
              max_dist = 1,
              distance_col = "distance")
 
 #Remove useless columns 
-cd_loyalty_gps1 <- cd_loyalty_gps[,-c(5:8,10:13,15:16,21:27,29:31)]
+cd_loyalty_gps1 <- cd_loyalty_gps[,-c(3:13,15:16,20:26,28:30)]
+#Remove NA rows
+cd_loyalty_gps1 <- cd_loyalty_gps1 %>%
+  filter(!(fullname == "NA"))
+DT::datatable(cd_loyalty_gps1)
+```
+
+Although we could identify most of the card owners, some of them still had duplicates. For example, Ingrid Barranco, Lucas Alcazar, Loreto Bodrogi, Sven Flecha, Hennie Osvaldo, Varja Lagos, Minke Mies, Kanon Herrero and Marin Onda. Hence, we removed their records just to show the cards that we could identify their owners.
+
+```{r echo=TRUE, eval=TRUE}
+cd_loyalty_gps2 <- cd_loyalty_gps1 %>%
+  filter(!(fullname == "Ingrid Barranco")) %>%
+  filter(!(fullname == "Lucas Alcazar")) %>%
+  filter(!(fullname == "Loreto Bodrogi")) %>%
+  filter(!(fullname == "Sven Flecha")) %>%
+  filter(!(fullname == "Hennie Osvaldo")) %>%
+  filter(!(fullname == "Varja Lagos")) %>%
+  filter(!(fullname == "Minke Mies")) %>%
+  filter(!(fullname == "Kanon Herrero")) %>%
+  filter(!(fullname == "Marin Onda"))
+DT::datatable(cd_loyalty_gps2)
 ```
 
 
