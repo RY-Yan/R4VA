@@ -29,6 +29,7 @@ Company cars can be used for personal and business use, but company trucks canno
 
 # Literature Review
 
+The same dataset have been used in 2014 VAST Challenge, which listed in Reference. Some groups using heatmap to show the relationship of location, date, time etc. [City University London](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC2%20-%20Patterns%20of%20Life%20Analysis/entries/giCentre%20-%20City%20University%20London/) created theire own map by using Abila road network. [Central South University](https://www.cs.umd.edu/hcil/varepository/VAST%20Challenge%202014/challenges/MC2%20-%20Patterns%20of%20Life%20Analysis/entries/Central%20South%20University/) used heatmap to show the transactions. All of these methods are worth to refer. Hence, in the report, we will mainly use heatmap and bipartite graph to show the relationship. And then try to show the suspectable route or behavior by tm_map.
 
 
 # DATA
@@ -123,8 +124,8 @@ cd$day <- day(cd$timestamp) %>% as_factor
 
 #cd <- tibble::rowid_to_column(cc, "ID") # Create a numeric id column
 
-cd$popular_location <- paste(cd$date,cd$location,cd$price) # Create a separate column of unique values using concatenated values in the cc data
-cd$s_location <- paste(cd$date,cd$location,cd$hour) # Create a second separate column of unique values using concatenated values in the cc data
+cd$popular_location <- paste(cd$date,cd$location,cd$price)
+cd$s_location <- paste(cd$date,cd$location,cd$hour) 
 ```
 
 Clean the loyalty card data
@@ -572,6 +573,7 @@ Therefore, we could assume that some people from Site and Perimeter Control migh
 ### 5.2 Suspectable transactions
 
 5.2.1 Transaction with large amount
+
 ```{r echo=TRUE, eval=TRUE}
 cdpriceplot <- ggplot(cd, 
                      aes(x = price, 
@@ -590,6 +592,7 @@ cdpriceplot
 According to the box plot made by credit card data, Lucas Alcazar spent a large sum of money at Frydo’s Autosupply n’ More. 
 
 5.2.2 Transaction at midnight
+
 ```{r echo=TRUE, eval=TRUE}
 cd1<- cd 
 cd1$time<-format(as.POSIXct(cd1$timestamp), format = "%H:%M:%S")
