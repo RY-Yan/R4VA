@@ -121,11 +121,6 @@ cd$Time_perids <- period(cd$hour)
 cd$date <- as.Date(cd$timestamp)
 cd$weekday <- wday(cd$timestamp, label = TRUE) 
 cd$day <- day(cd$timestamp) %>% as_factor 
-
-#cd <- tibble::rowid_to_column(cc, "ID") # Create a numeric id column
-
-cd$popular_location <- paste(cd$date,cd$location,cd$price)
-cd$s_location <- paste(cd$date,cd$location,cd$hour) 
 ```
 
 Clean the loyalty card data
@@ -321,7 +316,6 @@ For these issues, we recommend that using full join to join credit and loyalty c
 # Clean the data
 # Create new column for full name to make records unique
 car$fullname <- paste(car$FirstName,car$LastName, sep = " ") 
-car$employment_position <- paste(car$CarID, car$CurrentEmploymentTitle, car$fullname, sep = " ")
 ```
 
 ```{r echo=TRUE, eval=TRUE}
@@ -337,12 +331,12 @@ route <- ggplot() +
       geom_point(data = gps1, 
                    aes(x = long, y = lat,color = CurrentEmploymentType), 
                    size = 0.8)+
-      facet_grid(day~CurrentEmploymentType) + theme_bw()
-
-route <- route+ ggtitle(label = "Movement Route by Current Employment Type",
-                  subtitle = '(Company cars)')+theme(
-  plot.title = element_text(color = "black",size = 15),
-  plot.subtitle = element_text(size = 10))
+      facet_grid(day~CurrentEmploymentType) + theme_bw() +
+  ggtitle(label = "Movement Route by Current Employment Type",
+          subtitle = "(Company cars)") + theme(
+            plot.title = element_text(color = "black", size = 15),
+            plot.subtitle = element_text(size = 10)
+          )
 route
 ```
 
@@ -535,7 +529,7 @@ cd_loyalty_gps <- gps_car %>%
              distance_col = "distance")
 
 #Remove useless columns 
-cd_loyalty_gps1 <- cd_loyalty_gps[,-c(3:13,15:16,20:26,28:30)]
+cd_loyalty_gps1 <- cd_loyalty_gps[,-c(3:13,15:17,19:23,25:27)]
 #Remove NA rows
 cd_loyalty_gps1 <- cd_loyalty_gps1 %>%
   filter(!(fullname == "NA"))
